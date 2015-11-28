@@ -112,6 +112,11 @@ body {
   text-align: left;
 }
 
+.reveal .source-list > li {
+  font-size: 0.75em;
+  padding-bottom: 0.75em;
+}
+
 /************** end tweaks ***********/
 
 /* Ensure certain elements are never larger than the slide itself */
