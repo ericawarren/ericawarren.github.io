@@ -6,6 +6,3 @@ To view, launch index.html in a modern browser or visit http://ericawarren.githu
 ## Contents
 ### css, images, js, lib, plugin
 Required for web presentation
-
-### r-code
-Text files of R code used to produce the visualizations in the presentation
