@@ -87,6 +87,11 @@ body {
 /*******************************************
 * tweaks for Data Viz presentation ELW 
 *****************************************/
+.reveal .title {
+  background-color: #bfbfbf;
+  padding: 2em 0em;
+}
+
 .reveal .graph-with-caption {
   float: right;
   width: 80%;
