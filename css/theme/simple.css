@@ -15,7 +15,7 @@ body {
   background-color: #fff; }
 
 .reveal {
-  font-family: "Lato", sans-serif;
+  font-family: "Helvetica", sans-serif;
   font-size: 36px;
   font-weight: normal;
   color: #000; }
@@ -41,23 +41,26 @@ body {
 .reveal h6 {
   margin: 0 0 20px 0;
   color: #000;
-  font-family: "News Cycle", Impact, sans-serif;
+  font-family: "Helvetica", Impact, sans-serif;
   font-weight: normal;
   line-height: 1.2;
   letter-spacing: normal;
   text-transform: none;
   text-shadow: none;
-  word-wrap: break-word; }
+  word-wrap: break-word; 
+  text-shadow: none; 
+}
 
 /******************************************
 * colors added by ELW for presentation
 *******************************************/
 .reveal h1 {
   font-size: 3em; 
-  color: #ab1f3b; }
+  color: #2c5f7a; }
 
 .reveal h2 {
-  font-size: 1.5em; }
+  font-size: 1.1em; 
+  color: #61a2c6; }
 
 .reveal h3 {
   font-size: 1em; }
@@ -65,8 +68,6 @@ body {
 .reveal h4 {
   font-size: 0.75em; }
 
-.reveal h1 {
-  text-shadow: none; }
 
 /*********************************************
  * OTHER
@@ -82,9 +83,15 @@ body {
 .reveal .graph-with-caption {
   float: right;
   width: 80%;
-  margin: 0 25px 20px 0;
-  padding: 15px;
+  margin: 0 0 0 20px;
+  padding: 0px;
   text-align: left;
+}
+
+.reveal .caption {
+  font-size: 0.5em;
+  text-align: left;
+  vertical-align: middle;
 }
 
 .reveal .pointer {
@@ -92,8 +99,10 @@ body {
  color: #67a9cf; }
 
 .reveal .source {
-  font-size: 0.4em;
-  color: #000; }
+  font-size: 0.25em;
+  color: #000; 
+  text-align: left;
+}
 
 /************** end tweaks ***********/
 
@@ -101,8 +110,8 @@ body {
 .reveal img,
 .reveal video,
 .reveal iframe {
-  max-width: 95%;
-  max-height: 95%; }
+  max-width: 100%;
+  max-height: 100%; }
 
 .reveal strong,
 .reveal b {
