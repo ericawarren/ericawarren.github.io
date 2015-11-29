@@ -1,0 +1,50 @@
+#Data Source http://data.bls.gov/pdq/SurveyOutputServlet
+#Employment statistics for Motion Picture and Sound Recording Industries
+#Annual earnings from 2006 to 2015 captured on monthly basis
+
+
+# install.packages(c("ggplot2", "gcookbook", "grid"))  # only need to install once
+library(ggplot2)
+library(grid)  #need for theme_team, as noted in theme code
+library(gcookbook)
+
+setwd("C:/Users/Erica/Desktop/iancau_week10/iancau_week10/")
+
+# load data before running plot
+employment <- read.csv("iancau_annualdata_R.csv", header=TRUE)
+print(employment)
+
+# theme function for unified presentation 
+theme_team <- function(base_size = 20) {
+  # requires grid package for unit function
+  theme_grey(base_size) %+replace%
+    theme(
+      axis.title = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
+      axis.text = element_text(color = c("#424242"), size = 16, face = "bold"),
+      panel.background = element_blank(),
+      panel.grid = element_blank(),
+      axis.ticks = element_line(colour = c("#424242"), size = 1), 
+      axis.ticks.length = unit(0.5, "cm"),
+      axis.ticks.margin = unit(0.5, "cm"),
+      panel.margin = unit(0, "lines"), 
+      complete = TRUE
+    )
+}
+
+plot(employment)
+#Generates a pretty basic output that needs cleaning up
+#Use 'ggplot'
+
+ggplot(employment, aes(x=Year, y=Annual), main="Motion picture and sound recording industry: Annual hourly earnings (2007-14)") + geom_area(fill="blue", alpha=.2) + geom_line()
+
+# can add as many things to ggplot at one time as you want
+# also using colors from our theme colors
+# if you use the theme_team instead of your own, it already removes gridlines
+# and removed ggtitle because we're adding those in the HTML
+p <- ggplot(employment, aes(x=Year, y=Annual)) + 
+  geom_area(fill="#61a2c6") + 
+  theme_team()
+
+p
+
+ggsave("Iancau_Fig1.svg", width = 16, height = 9)

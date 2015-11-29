@@ -1,0 +1,154 @@
+# 455_55 Art and Music Group Project
+install.packages('dplyr')
+# Resource of the dataset https://www.arts.gov/publications/additional-materials-related-to-2012-sppa
+
+# load all the packages we need
+library(ggplot2)
+library(tidyr)
+library(grid)
+library(plyr)
+library(gcookbook)
+library(dplyr)
+
+setwd('C:/Users/222040160/Desktop/455') #location of your dataset
+
+theme_team <- function(base_size = 20) {
+  # requires grid package for unit function
+    theme_grey(base_size) %+replace%
+    theme(
+      axis.title           = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
+      axis.text            = element_text(color = c("#424242"), size = 16, face = "bold"),
+      panel.background     = element_blank(),
+      panel.grid           = element_blank(),
+      panel.border         = element_blank(),
+      axis.ticks           = element_line(colour = c("#424242"), size = 1), 
+      axis.ticks.length    = unit(0.5, "cm"),
+      axis.ticks.margin    = unit(0.5, "cm"),
+      panel.margin         = unit(0, "lines"),
+      plot.background      = element_rect(fill = "transparent", colour = NA),
+      legend.background    = element_rect(fill = "transparent", colour = NA),
+      complete = TRUE
+    )
+}
+
+# 5/6-level scale
+#six_levels = c("#08519c","#2c5f7a", "#3a7ca0", "#61a2c6", "#9ac3db", "#c0d9e9")
+five_levels = c("#2c5f7a", "#3a7ca0", "#61a2c6", "#9ac3db", "#c0d9e9")
+ 
+mydata <- read.csv("sppa1982-2012_spss.csv", header = TRUE)
+
+# define all the factors we need
+mydata$YEAR <- as.factor(mydata$YEAR)
+# create a new variable and assign value for the categorical variable
+mydata$MUSICAL_Part <- ifelse(mydata$MUSICAL == 'YES',1,0)
+
+# filter out the years of data we don't need. Only keep a datapoint every 10 years.
+Musical_sub <- subset(mydata, YEAR != "1985")
+Musical_sub <- subset(Musical_sub, YEAR != "2008")
+str(Musical_sub)
+
+
+# create a subset without N/A response
+Musical_sub <- subset(Musical_sub, !is.na(MUSICAL_Part))
+str(Musical_sub)
+
+count_gender <-ddply(Musical_sub,.(YEAR,GENDER),summarize,freq=length(MUSICAL_Part))
+sum_gender <-ddply(Musical_sub,.(YEAR,GENDER),summarize,MUSICAL_Part=sum(MUSICAL_Part))
+colbind_gender <-cbind(count_gender,sum_gender)
+colbind_gender
+# define all the factors we need
+colbind_gender$YEAR <- as.factor(colbind_gender$YEAR)
+#colbind_gender$MUSICAL_Rate <- colbind_gender$MUSICAL_Part/colbind_gender$freq
+colbind_gender$MUSICAL_Rate <- round((colbind_gender$MUSICAL_Part/colbind_gender$freq),digits=2)
+str(colbind_gender)
+
+ggplot.musical_gender <- ggplot(data = colbind_gender) +
+  aes(YEAR,MUSICAL_Rate,ymax=0.3,fill=GENDER) + 
+  geom_bar(stat="identity", position="dodge") +
+  labs(x = "YEAR") +
+  labs(y = "Musical Attendance Rate") +
+  scale_fill_manual(values = five_levels) +
+  geom_text(aes(label=MUSICAL_Rate),vjust= -0.3,position=position_dodge(.9),size=4) +
+  theme_team() +
+  theme(axis.ticks.y = element_blank()) +
+  #guides(fill=guide_legend(reverse=TRUE)) +
+  expand_limits(y=0) +
+  scale_y_continuous(breaks=NULL)
+print(ggplot.musical_gender)
+
+# create a subset with age less than 55
+Musical_subage <- subset(Musical_sub, AGE<=54)
+str(Musical_subage)
+
+count_age <-ddply(Musical_subage,.(YEAR,AGEGROUP),summarize,freq=length(MUSICAL_Part))
+sum_age <-ddply(Musical_subage,.(YEAR,AGEGROUP),summarize,MUSICAL_Part=sum(MUSICAL_Part))
+colbind_age <-cbind(count_age,sum_age)
+colbind_age
+
+# define all the factors we need
+colbind_age$YEAR <- as.factor(colbind_age$YEAR)
+#colbind_age$MUSICAL_Rate <- colbind_age$MUSICAL_Part/colbind_age$freq
+colbind_age$MUSICAL_Rate <- round((colbind_age$MUSICAL_Part/colbind_age$freq),digits=2)
+str(colbind_age)
+
+ggplot.musical_age <- ggplot(data = colbind_age) +
+  aes(YEAR,MUSICAL_Rate,ymax=0.3,fill=AGEGROUP) + 
+  geom_bar(stat="identity", position="dodge") +
+  labs(x = "YEAR") +
+  labs(y = "Musical Attendance Rate") +
+  scale_fill_manual(values = five_levels) +
+  geom_text(aes(label=MUSICAL_Rate),vjust= -0.3,position=position_dodge(.9),size=4) +
+  theme_team() +
+  theme(axis.ticks.y = element_blank()) +
+  #guides(fill=guide_legend(reverse=TRUE)) +
+  expand_limits(y=0) +
+  scale_y_continuous(breaks=NULL)
+print(ggplot.musical_age)
+
+
+# create a subset for MARITAL status
+Musical_subma <- subset(Musical_sub, !is.na(MARITAL))
+str(Musical_subma)
+
+# married-spouse absent is only in two years' surveys, exclude it for analysis 
+Musical_subma <- subset(Musical_subma, MARITAL != "MARRIED - SPOUSE ABSENT")
+str(Musical_subma)
+
+count_ma <-ddply(Musical_subma,.(YEAR,MARITAL),summarize,freq=length(MUSICAL_Part))
+sum_ma <-ddply(Musical_subma,.(YEAR,MARITAL),summarize,MUSICAL_Part=sum(MUSICAL_Part))
+colbind_ma <-cbind(count_ma,sum_ma)
+colbind_ma
+
+# define all the factors we need
+colbind_ma$YEAR <- as.factor(colbind_ma$YEAR)
+#colbind_ma$MUSICAL_Rate <- colbind_ma$MUSICAL_Part/colbind_ma$freq
+colbind_ma$MUSICAL_Rate <- round((colbind_ma$MUSICAL_Part/colbind_ma$freq),digits=2)
+str(colbind_ma)
+
+ggplot.musical_ma <- ggplot(data = colbind_ma) +
+  aes(YEAR,MUSICAL_Rate,ymax=0.3,fill=MARITAL) + 
+  geom_bar(stat="identity", position="dodge") +
+  labs(x = "YEAR") +
+  labs(y = "Musical Attendance Rate") +
+  #ggtitle("Musical Participation Distribution") +
+  scale_fill_manual(values = five_levels) +
+  geom_text(aes(label=MUSICAL_Rate),vjust= -0.3,position=position_dodge(.9),size=3) +
+  theme_team() +
+  theme(axis.ticks.y = element_blank()) +
+  #guides(fill=guide_legend(reverse=TRUE)) +
+  expand_limits(y=0) +
+  scale_y_continuous(breaks=NULL)
+print(ggplot.musical_ma)
+
+
+svg("Musical_gender.svg",width = 11, height = 8.5)
+print(ggplot.musical_gender)
+dev.off()
+
+svg("Musical_age.svg",width = 11, height = 8.5)
+print(ggplot.musical_age)
+dev.off()
+
+svg("Musical_marriage.svg",width = 11, height = 8.5)
+print(ggplot.musical_ma)
+dev.off()

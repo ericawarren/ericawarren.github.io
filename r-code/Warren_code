@@ -1,0 +1,345 @@
+# Erica Warren, PREDICT 455.55, Checkpoint B for final project
+
+# data is from here: http://www.icpsr.umich.edu/icpsrweb/NADAC/series/00406
+# it's free to the public but you have to register first
+# 36067-0001 is Elementary School Arts Education Survey: Fall 2009
+# 36068-0001 is Secondary School Arts Education Survey: Fall 2009
+# 36069-0001 is Survey of Elementary School Music Specialists 2009-2010
+# 36069-0002 is Survey of Elementary School Visual Arts Specialists 2009-2010
+# 36069-0003 is Survey of Elementary School Classroom Teachers 2009-2010
+# 36070-0001 is Survey of Secondary School Music Specialists 2009-2010
+# 36070-0002 is Survey of Secondary School Visual Arts Specialists 2009-2010
+
+# General citation for all is as follows (with different study numbers):
+# United States Department of Education. Institute of Education Sciences. 
+# National Center for Education Statistics. Fast Response Survey System (FRSS): 
+# Arts Education Surveys of Elementary School Teachers, 2009-2010. ICPSR36069-v1. 
+# Ann Arbor, MI: Inter-university Consortium for Political and Social Research 
+# [distributor], 2015-03-23. http://doi.org/10.3886/ICPSR36069.v1
+
+
+# ====== LOAD PACKAGES ======================
+library(ggplot2)
+library(tidyr)
+library(grid)
+library(plyr)
+
+# ====== FUNCTIONS! =========================
+# this mostly from R Graphics Cookbook pp. 317-18
+# tweaked for our use
+
+theme_team <- function(base_size = 20) {
+  # requires grid package for unit function
+    theme_grey(base_size) %+replace%
+    theme(
+      axis.title           = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
+      axis.text            = element_text(color = c("#424242"), size = 16, face = "bold"),
+      panel.background     = element_blank(),
+      panel.grid           = element_blank(),
+      panel.border         = element_blank(),
+      axis.ticks           = element_line(colour = c("#424242"), size = 1), 
+      axis.ticks.length    = unit(0.5, "cm"),
+      axis.ticks.margin    = unit(0.5, "cm"),
+      panel.margin         = unit(0, "lines"),
+      plot.background      = element_rect(fill = "transparent", colour = NA),
+      legend.background    = element_rect(fill = "transparent", colour = NA),
+      complete = TRUE
+    )
+}
+
+# 
+
+# ====== COLOR PALETTE! ======================
+
+# 5-level scale
+five_levels = c("#2c5f7a", "#3a7ca0", "#61a2c6", "#9ac3db", "#c0d9e9")
+
+# ====== START: LOAD DATA  ==============================
+# Set working directory (where we want to save our code and stuff)
+setwd("C:/Users/Erica/Dropbox (Personal)/MSPA/455_Data-Visualization/TermProject")
+
+# but our datasets are saved here
+data_dir <- "C:/Users/Erica/Dropbox (Personal)/MSPA/455_Data-Visualization/TermProject/Data/R_data_files/"
+# we've got 7 different surveys there
+load(paste(data_dir, "36067-0001-Data.rda", sep = ""))
+load(paste(data_dir, "36068-0001-Data.rda", sep = ""))
+load(paste(data_dir, "36069-0001-Data.rda", sep = ""))
+load(paste(data_dir, "36069-0002-Data.rda", sep = ""))
+load(paste(data_dir, "36069-0003-Data.rda", sep = ""))
+load(paste(data_dir, "36070-0001-Data.rda", sep = ""))
+load(paste(data_dir, "36070-0002-Data.rda", sep = ""))
+
+# let's rename the datasets so they are easier to deal with
+elementaryArtsEd_df <- da36067.0001 
+secondaryArtsEd_df <- da36068.0001
+elementaryMusic_df <- da36069.0001
+elementaryVisual_df <- da36069.0002
+elementaryClassroom_df <- da36069.0003
+secondaryMusic_df <- da36070.0001
+secondaryVisual_df <- da36070.0002
+
+# and now a little EDA
+str(elementaryArtsEd_df)
+str(secondaryArtsEd_df)
+str(elementaryMusic_df)
+str(elementaryVisual_df)
+str(elementaryClassroom_df)
+str(secondaryMusic_df)
+str(secondaryVisual_df)
+
+# % of students eligible for free/reduced lunch
+(poverty <- table(elementaryArtsEd_df$POVST))
+barplot(poverty)  # about equal amounts of each group
+
+### How often does a typical student receive instruction for...
+# ...visual arts?
+visual_day <- table(elementaryArtsEd_df$Q1A)
+barplot(visual_day) # mostly "Once or twice a week"
+
+# ...music?
+music_day <- table(elementaryArtsEd_df$Q1B)
+barplot(music_day) # mostly "Once or twice a week"
+
+# ...dance?
+dance_day <- table(elementaryArtsEd_df$Q1C)
+barplot(dance_day) # mostly "not at all"
+
+# ...drama-theatre?
+drama_day <- table(elementaryArtsEd_df$Q1D)
+barplot(drama_day) # mostly "not at all"
+
+# ====== FIGURE 1 ==========================
+# make a nicer visual of all of those w/ ggplot
+Fig1_df <- as.data.frame(visual_day)
+names(Fig1_df) <- c("Freq", "Visual_Arts")
+Fig1_df$Music <- music_day
+Fig1_df$Dance <- dance_day
+Fig1_df$Drama <- drama_day
+Fig1_df # but this is wide, we need it long for ggplot
+
+keycol <- "Art Type"
+valuecol <- "Number of Schools"
+gathercols <- c("Visual Arts", "Music", "Dance", "Drama")
+(Fig1_df_long <- gather(Fig1_df, Art_Type, Number_Of_Schools, Drama:Visual_Arts))
+
+par(mar=c(0,0,50,0))
+
+(Fig1 <- ggplot(Fig1_df_long, aes(x=Art_Type, y=Number_Of_Schools, fill=Freq))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab(NULL) + 
+  ylab("Number of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank())
+
+# eh, would be better as percents
+(Fig1_df_percent <- ddply(Fig1_df_long, "Art_Type", transform, 
+                          percent_of_schools = Number_Of_Schools / sum(Number_Of_Schools) * 100))
+
+# And let's put Muisc on top
+Fig1_df_percent$Art_Type <- factor(Fig1_df_percent$Art_Type, levels = c("Dance", "Drama", "Visual_Arts", "Music"))
+
+(Fig1b <- ggplot(Fig1_df_percent, aes(x=Art_Type, y=percent_of_schools, fill=Freq))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab(NULL) + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank())
+
+# now make a version w/ title for inclusion in final presentation:
+(Fig1c <- ggplot(Fig1_df_percent, aes(x=Art_Type, y=percent_of_schools, fill=Freq))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab(NULL) + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank()) + 
+  ggtitle("Frequency of instruction in the arts in\nU.S. elementary schools, 2009-2010.")
+
+ggsave("Warren_Fig1.png", width = 16, height = 9, dpi = 72)
+
+# ====== FIGURE 2 ===========================
+# can we compare this with poverty levels?
+poverty_df <- subset(elementaryArtsEd_df, select = c("POVST", "Q1A", "Q1B"))
+names(poverty_df) <- c("Free_lunch_eligible", "Visual_Arts", "Music")
+
+# create cross tab to get counts
+(lunch_art_df <- as.data.frame(xtabs(~Free_lunch_eligible+Visual_Arts, data = poverty_df)))
+
+# make a li'l bar graph
+(Fig2 <- ggplot(lunch_art_df, aes(x=Visual_Arts, y=Freq, fill=Free_lunch_eligible)) + 
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_fill_manual(values = five_levels) + 
+  xlab("Number of days per week instruction in Visual Arts") +
+  theme_team()) + 
+  coord_flip()
+
+# does it work better the other way around?
+(Fig2b <- ggplot(lunch_art_df, aes(x=Free_lunch_eligible, y=Freq, fill=Visual_Arts)) + 
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free or reduced lunch") +
+  theme_team()) + 
+  coord_flip() + 
+  theme(axis.title.y = element_text(vjust = 0.5))
+
+# calculate percents
+(visual_arts_percent <- ddply(lunch_art_df, "Free_lunch_eligible", transform, 
+                              percent_of_schools = Freq / sum(Freq) * 100))
+# try it as a stacked graph
+(Fig2c <- ggplot(visual_arts_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Visual_Arts))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1))
+
+ggsave("Warren_Fig2.svg", width = 16, height = 9, dpi = 72)
+
+# create with title for first draft
+(Fig2c <- ggplot(visual_arts_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Visual_Arts))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) + 
+  ggtitle("Does poverty-level affect amount\nof arts offered in elementary school?")
+
+ggsave("Warren_Fig2.png", width = 16, height = 9, dpi = 72)
+
+# ====== FIGURE 3 ===============================
+# now one for Music
+(lunch_music_df <- as.data.frame(xtabs(~Free_lunch_eligible+Music, data = poverty_df)))
+
+# plot!
+(Fig3 <- ggplot(lunch_music_df, aes(x=Free_lunch_eligible, y=Freq, fill=Music)) + 
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free or reduced lunch") +
+  theme_team()) + 
+  coord_flip() + 
+  theme(axis.title.y = element_text(vjust = 0.5, hjust = 1))
+
+# calculate percents
+(music_percent <- ddply(lunch_music_df, "Free_lunch_eligible", transform, 
+                              percent_of_schools = Freq / sum(Freq) * 100))
+
+# try it as a stacked graph
+(Fig3b <- ggplot(music_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Music))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1))
+
+ggsave("Warren_Fig3.svg", width = 16, height = 9, dpi = 72)
+
+# create with title for first draft
+(Fig3c <- ggplot(music_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Music))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) +
+  ggtitle("Does poverty-level affect amount of\nmusic offered in elementary school?")
+
+ggsave("Warren_Fig3.png", width = 16, height = 9, dpi = 72)
+
+# ====== FIGURE 4 ===============================
+supplies_df <- subset(elementaryVisual_df, select = c("POVST", "Q16G"))
+names(supplies_df) <- c("Free_lunch_eligible", "Supplies_support")
+
+(supplies_tab <- as.data.frame(xtabs(~Free_lunch_eligible+Supplies_support, data = supplies_df)))
+
+# plot!
+(Fig4 <- ggplot(supplies_tab, aes(x=Free_lunch_eligible, y=Freq, fill=Supplies_support)) + 
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free or reduced lunch") +
+  theme_team()) + 
+  coord_flip() + 
+  theme(axis.title.y = element_text(vjust = 0.5, hjust = 1))
+
+# calculate percents
+(supplies_percent <- ddply(supplies_tab, "Free_lunch_eligible", transform, 
+                        percent_of_schools = Freq / sum(Freq) * 100))
+
+# try it as a stacked graph
+(Fig4b <- ggplot(supplies_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Supplies_support))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1))
+
+ggsave("Warren_Fig4.svg", width = 16, height = 9, dpi = 72)
+
+# with title
+(Fig4c <- ggplot(supplies_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Supplies_support))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) + 
+  ggtitle("Does poverty-level affect adequacy of supplies available\nfor visual arts instruction in elementary school?")
+
+ggsave("Warren_Fig4.png", width = 16, height = 9, dpi = 72)
+
+# ====== FIGURE 5 ===============================
+instruments_df <- subset(elementaryMusic_df, select = c("POVST", "Q17G"))
+names(instruments_df) <- c("Free_lunch_eligible", "Instruments_support")
+
+(instruments_tab <- as.data.frame(xtabs(~Free_lunch_eligible+Instruments_support, data = instruments_df)))
+
+# plot!
+(Fig5 <- ggplot(instruments_tab, aes(x=Free_lunch_eligible, y=Freq, fill=Instruments_support)) + 
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free or reduced lunch") +
+  theme_team()) + 
+  coord_flip() + 
+  theme(axis.title.y = element_text(vjust = 0.5, hjust = 1))
+
+# calculate percents
+(instruments_percent <- ddply(instruments_tab, "Free_lunch_eligible", transform, 
+                           percent_of_schools = Freq / sum(Freq) * 100))
+
+# try it as a stacked graph
+(Fig5b <- ggplot(instruments_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Instruments_support))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1))
+
+ggsave("Warren_Fig5.svg", width = 16, height = 9, dpi = 72)
+
+(Fig5c <- ggplot(instruments_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Instruments_support))) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  scale_fill_manual(values = five_levels) + 
+  xlab("Percent of students eligible for free/reduced lunch") + 
+  ylab("Percent of Schools") +
+  theme_team() +
+  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) + 
+  ggtitle("Does poverty-level affect adequacy of instrumentss available\nfor music instruction in elementary school?")
+
+ggsave("Warren_Fig5.png", width = 16, height = 9, dpi = 72)

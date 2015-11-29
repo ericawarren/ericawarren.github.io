@@ -1,0 +1,115 @@
+ Nathan Porteshawver
+# PREDICT 455.55 Arts and Music
+
+# bring mapping packages into the workspace
+library(choroplethr) # choropleth in r
+library(choroplethrMaps) # map plotting that includes Alaska and Hawaii 
+library(grid)
+library(ggplot2)
+
+# theme function for unified presentation 
+theme_team <- function(base_size = 20) {
+ # requires grid package for unit function
+ theme_grey(base_size) %+replace%
+ theme(
+ axis.title = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
+ axis.text = element_text(color = c("#424242"), size = 16, face = "bold"),
+ panel.background = element_blank(),
+ panel.grid = element_blank(),
+ axis.ticks = element_line(colour = c("#424242"), size = 1), 
+ axis.ticks.length = unit(0.5, "cm"),
+ axis.ticks.margin = unit(0.5, "cm"),
+ panel.margin = unit(0, "lines"), 
+ complete = TRUE
+ )
+}
+
+
+# Read in new data set
+# the Public Funding Sourcebook is collected by the National Association of
+# State Arts Agencies to archive appropriations to state arts organizations
+# from legislatures from 2010 to the current day
+# 2010 per capita choropleth map 
+porteshawver.ninthh.data.frame <- read.csv("NASAA2010PCA.csv", header = TRUE)
+porteshawver.ninthh.data.frame$region <- as.character(porteshawver.ninthh.data.frame
+$region)
+# print to map
+# pdf(file = "2010_per_capita_appropriations_by_state.pdf", width = 11, height
+# = 8.5)
+svg(file = "2010_per_capita_appropriations_by_state.svg", width = 11, height = 8.5)
+state_choropleth(porteshawver.ninthh.data.frame, legend= "Per Capita Spending in USD", num_colors= 5)
+dev.off()
+
+
+# 2011 per capita choropleth map
+porteshawver.thirteenthh.data.frame <- read.csv("NASAA2011PCA.csv", header = TRUE)
+porteshawver.thirteenthh.data.frame$region <- as.character(porteshawver.thirteenthh.data.frame
+$region)
+# print to map
+# pdf(file = "2011_per_capita_appropriations_by_state.pdf", width = 11, height
+# = 8.5)
+
+svg(file = "2011_per_capita_appropriations_by_state.svg", width = 11, height = 8.5)
+state_choropleth(porteshawver.thirteenthh.data.frame, legend= "Per Capita Spending in USD", num_colors= 5)
+dev.off()
+
+
+
+# 2012 per capita choropleth map
+porteshawver.twelevthh.data.frame <- read.csv("NASAA2012PCA.csv", header = TRUE)
+porteshawver.twelevthh.data.frame$region <- as.character(porteshawver.twelevthh.data.frame
+$region)
+# print to map
+# pdf(file = "2012_per_capita_appropriations_by_state.pdf", width = 11, height
+# = 8.5)
+svg(file = "2012_per_capita_appropriations_by_state.svg", width = 11, height = 8.5)
+state_choropleth(porteshawver.twelevthh.data.frame, legend= "Per Capita Spending in USD", num_colors= 5)
+dev.off()
+
+
+# 2013 per capita choropleth map
+porteshawver.eleventhh.data.frame <- read.csv("NASAA2013PCA.csv", header = TRUE)
+porteshawver.eleventhh.data.frame$region <- as.character(porteshawver.eleventhh.data.frame
+$region)
+# print to map
+# pdf(file = "2013_per_capita_appropriations_by_state.pdf", width = 11, height
+# = 8.5)
+svg(file = "2013_per_capita_appropriations_by_state.svg", width = 11, height = 8.5)
+state_choropleth(porteshawver.eleventhh.data.frame, legend= "Per Capita Spending in USD", num_colors= 5)
+dev.off()
+
+
+# 2014 per capita choropleth map
+porteshawver.tenthh.data.frame <- read.csv("NASAA2014PCA.csv", header = TRUE)
+porteshawver.tenthh.data.frame$region <- as.character(porteshawver.tenthh.data.frame
+$region)
+# print to map
+# pdf(file = "2014_per_capita_appropriations_by_state.pdf", width = 11, height
+#= 8.5)
+svg(file = "Best_States_For_Arts.svg", width = 11, height = 8.5)
+state_choropleth(porteshawver.tenthh.data.frame, legend= "Per Capita Spending in USD", num_colors= 1)
+dev.off()
+
+# highllight best states for the arts
+
+# 2015 per capita choropleth map
+porteshawver.tenth.data.frame <- read.csv("NASAA2015CPA.csv", header = TRUE)
+porteshawver.tenth.data.frame$region <- as.character(porteshawver.tenth.data.frame
+$region)
+# pdf(file = "2015_map_appropriations_by_state.pdf", width = 11, height = 8.5)
+state_choropleth(porteshawver.tenth.data.frame, title ="State Appropriations to the Arts in 2015", legend= "USD", num_colors= 5)
+dev.off()
+
+porteshawver_time_series <-read.csv(file="NASAATimeSeries.csv", sep=",", header=TRUE)
+# Plot Time Series
+svg(file="State_Arts_Appropriation_1970_2015.svg",width = 11,height = 8.5)
+barplot(porteshawver_time_series$Total, names.arg=porteshawver_time_series$Year, xlab= "Year", ylab="Total State Legislative Appropriations to the arts")+ theme_team()
+dev.off()
+
+time_series <- read.csv(file="NASAATimeSeries.csv", sep=",", header=TRUE)
+svg(file="Trial_State_Arts_Appropriation_1970_2015.svg",width = 11,height = 8.5)
+ggplot(time_series, aes(x=Year, y=StateGiving, fill=Per.Capita)) + geom_bar(stat="identity") + theme_team() +
+theme(axis.ticks.y = element_blank()) +
+scale_fill_manual(values=c("#ab1f3b", "#2c5f7a"))
+dev.off()
+
