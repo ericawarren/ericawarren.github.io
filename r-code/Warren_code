@@ -84,6 +84,33 @@ elementaryArtsEd_df <- subset(elementaryArtsEd_df, select = c("POVST", "Q1A", "Q
 write.csv(elementaryArtsEd_df, file = "elementaryArtsEd.csv")
 str(elementaryArtsEd_df)
 
+# rename factor levels to get rid of initial numeral
+levels(elementaryArtsEd_df$POVST) <- c("25 percent or less", 
+                                     "26 to 50 percent", 
+                                     "51 to 75 percent", 
+                                     "76 percent or more")
+levels(elementaryArtsEd_df$Q1A) <- c("Every day", 
+                                     "3 or 4 times a week", 
+                                     "Once or twice a week", 
+                                     "Less than once a week", 
+                                     "Not at all")
+levels(elementaryArtsEd_df$Q1B) <- c("Every day", 
+                                     "3 or 4 times a week", 
+                                     "Once or twice a week", 
+                                     "Less than once a week", 
+                                     "Not at all")
+levels(elementaryArtsEd_df$Q1C) <- c("Every day", 
+                                     "3 or 4 times a week", 
+                                     "Once or twice a week", 
+                                     "Less than once a week", 
+                                     "Not at all")
+levels(elementaryArtsEd_df$Q1D) <- c("Every day", 
+                                     "3 or 4 times a week", 
+                                     "Once or twice a week", 
+                                     "Less than once a week", 
+                                     "Not at all")
+str(elementaryArtsEd_df)
+
 # % of students eligible for free/reduced lunch
 (poverty <- table(elementaryArtsEd_df$POVST))
 barplot(poverty)  # about equal amounts of each group
@@ -148,18 +175,7 @@ Fig1_df_percent$Art_Type <- factor(Fig1_df_percent$Art_Type, levels = c("Dance",
   theme_team() +
   theme(axis.ticks.y = element_blank())
 
-# now make a version w/ title
-(Fig1c <- ggplot(Fig1_df_percent, aes(x=Art_Type, y=percent_of_schools, fill=Freq))) + 
-  geom_bar(stat = "identity") + 
-  coord_flip() + 
-  scale_fill_manual(values = five_levels) + 
-  xlab(NULL) + 
-  ylab("Percent of Schools") +
-  theme_team() +
-  theme(axis.ticks.y = element_blank()) + 
-  ggtitle("Frequency of instruction in the arts in\nU.S. elementary schools, 2009-2010.")
-
-ggsave("Warren_Fig1.png", width = 16, height = 9, dpi = 72)
+ggsave("Warren_Fig1.svg", width = 16, height = 9, dpi = 72)
 
 # ====== FIGURE 2 ===========================
 # can we compare this with poverty levels?
@@ -201,18 +217,7 @@ names(poverty_df) <- c("Free_lunch_eligible", "Visual_Arts", "Music")
 
 ggsave("Warren_Fig2.svg", width = 16, height = 9, dpi = 72)
 
-# create with title for first draft
-(Fig2c <- ggplot(visual_arts_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Visual_Arts))) + 
-  geom_bar(stat = "identity") + 
-  coord_flip() + 
-  scale_fill_manual(values = five_levels) + 
-  xlab("Percent of students eligible for free/reduced lunch") + 
-  ylab("Percent of Schools") +
-  theme_team() +
-  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) + 
-  ggtitle("Does poverty-level affect amount\nof arts offered in elementary school?")
 
-ggsave("Warren_Fig2.png", width = 16, height = 9, dpi = 72)
 
 # ====== FIGURE 3 ===============================
 # now one for Music
@@ -243,23 +248,24 @@ ggsave("Warren_Fig2.png", width = 16, height = 9, dpi = 72)
 
 ggsave("Warren_Fig3.svg", width = 16, height = 9, dpi = 72)
 
-# create with title for first draft
-(Fig3c <- ggplot(music_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Music))) + 
-  geom_bar(stat = "identity") + 
-  coord_flip() + 
-  scale_fill_manual(values = five_levels) + 
-  xlab("Percent of students eligible for free/reduced lunch") + 
-  ylab("Percent of Schools") +
-  theme_team() +
-  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) +
-  ggtitle("Does poverty-level affect amount of\nmusic offered in elementary school?")
 
-ggsave("Warren_Fig3.png", width = 16, height = 9, dpi = 72)
 
 # ====== FIGURE 4 ===============================
 supplies_df <- subset(elementaryVisual_df, select = c("POVST", "Q16G"))
 # save data set for submission with final project (since orig sets are so large)
 write.csv(supplies_df, file = "elementaryVisual.csv")
+
+# rename levels to remove leading integers
+levels(supplies_df$POVST) <- c("25 percent or less", 
+                               "26 to 50 percent", 
+                               "51 to 75 percent", 
+                               "76 percent or more")
+levels(supplies_df$Q16G) <- c("Not at all adequate", 
+                               "Minimally adequate", 
+                               "Moderately adequate", 
+                               "Completely adequate")
+str(supplies_df)
+
 names(supplies_df) <- c("Free_lunch_eligible", "Supplies_support")
 
 (supplies_tab <- as.data.frame(xtabs(~Free_lunch_eligible+Supplies_support, data = supplies_df)))
@@ -289,23 +295,21 @@ names(supplies_df) <- c("Free_lunch_eligible", "Supplies_support")
 
 ggsave("Warren_Fig4.svg", width = 16, height = 9, dpi = 72)
 
-# with title
-(Fig4c <- ggplot(supplies_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Supplies_support))) + 
-  geom_bar(stat = "identity") + 
-  coord_flip() + 
-  scale_fill_manual(values = five_levels) + 
-  xlab("Percent of students eligible for free/reduced lunch") + 
-  ylab("Percent of Schools") +
-  theme_team() +
-  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) + 
-  ggtitle("Does poverty-level affect adequacy of supplies available\nfor visual arts instruction in elementary school?")
-
-ggsave("Warren_Fig4.png", width = 16, height = 9, dpi = 72)
 
 # ====== FIGURE 5 ===============================
 instruments_df <- subset(elementaryMusic_df, select = c("POVST", "Q17G"))
 # save data set for submission with final project (since orig sets are so large)
 write.csv(instruments_df, file = "elementaryMusic.csv")
+levels(instruments_df$POVST) <- c("25 percent or less", 
+                               "26 to 50 percent", 
+                               "51 to 75 percent", 
+                               "76 percent or more")
+levels(instruments_df$Q17G) <- c("Not at all adequate", 
+                              "Minimally adequate", 
+                              "Moderately adequate", 
+                              "Completely adequate")
+str(supplies_df)
+
 names(instruments_df) <- c("Free_lunch_eligible", "Instruments_support")
 
 (instruments_tab <- as.data.frame(xtabs(~Free_lunch_eligible+Instruments_support, data = instruments_df)))
@@ -334,15 +338,3 @@ names(instruments_df) <- c("Free_lunch_eligible", "Instruments_support")
   theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1))
 
 ggsave("Warren_Fig5.svg", width = 16, height = 9, dpi = 72)
-
-(Fig5c <- ggplot(instruments_percent, aes(x=Free_lunch_eligible, y=percent_of_schools, fill=Instruments_support))) + 
-  geom_bar(stat = "identity") + 
-  coord_flip() + 
-  scale_fill_manual(values = five_levels) + 
-  xlab("Percent of students eligible for free/reduced lunch") + 
-  ylab("Percent of Schools") +
-  theme_team() +
-  theme(axis.ticks.y = element_blank(), axis.title.y = element_text(vjust = 1)) + 
-  ggtitle("Does poverty-level affect adequacy of instrumentss available\nfor music instruction in elementary school?")
-
-ggsave("Warren_Fig5.png", width = 16, height = 9, dpi = 72)
