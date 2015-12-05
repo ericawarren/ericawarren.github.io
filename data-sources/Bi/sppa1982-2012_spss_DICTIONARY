@@ -1,0 +1,6 @@
+Variable	VariableType	Defintion
+Year		integer			calendar year
+Musical		factor			answer of "Did you go to a live musical stage play during the last 12 months"
+Gender		factor			Gender of the survey taker
+Marrital	factor			Marital Status of the survey taker
+Agegroup	factor			Age group of the survey taker

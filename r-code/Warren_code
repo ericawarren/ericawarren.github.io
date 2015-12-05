@@ -60,32 +60,29 @@ setwd("C:/Users/Erica/Dropbox (Personal)/MSPA/455_Data-Visualization/TermProject
 
 # but our datasets are saved here
 data_dir <- "C:/Users/Erica/Dropbox (Personal)/MSPA/455_Data-Visualization/TermProject/Data/R_data_files/"
-# we've got 7 different surveys there
+# Note for final submission: submitting subsets of data actually used to save space (these are large)
 load(paste(data_dir, "36067-0001-Data.rda", sep = ""))
-load(paste(data_dir, "36068-0001-Data.rda", sep = ""))
 load(paste(data_dir, "36069-0001-Data.rda", sep = ""))
 load(paste(data_dir, "36069-0002-Data.rda", sep = ""))
-load(paste(data_dir, "36069-0003-Data.rda", sep = ""))
-load(paste(data_dir, "36070-0001-Data.rda", sep = ""))
-load(paste(data_dir, "36070-0002-Data.rda", sep = ""))
+
 
 # let's rename the datasets so they are easier to deal with
 elementaryArtsEd_df <- da36067.0001 
-secondaryArtsEd_df <- da36068.0001
 elementaryMusic_df <- da36069.0001
 elementaryVisual_df <- da36069.0002
-elementaryClassroom_df <- da36069.0003
-secondaryMusic_df <- da36070.0001
-secondaryVisual_df <- da36070.0002
+
 
 # and now a little EDA
 str(elementaryArtsEd_df)
-str(secondaryArtsEd_df)
 str(elementaryMusic_df)
 str(elementaryVisual_df)
-str(elementaryClassroom_df)
-str(secondaryMusic_df)
-str(secondaryVisual_df)
+
+
+elementaryArtsEd_df <- subset(elementaryArtsEd_df, select = c("POVST", "Q1A", "Q1B", "Q1C", "Q1D"))
+
+# save data set for submission with final project (since orig sets are so large)
+write.csv(elementaryArtsEd_df, file = "elementaryArtsEd.csv")
+str(elementaryArtsEd_df)
 
 # % of students eligible for free/reduced lunch
 (poverty <- table(elementaryArtsEd_df$POVST))
@@ -115,7 +112,9 @@ names(Fig1_df) <- c("Freq", "Visual_Arts")
 Fig1_df$Music <- music_day
 Fig1_df$Dance <- dance_day
 Fig1_df$Drama <- drama_day
-Fig1_df # but this is wide, we need it long for ggplot
+Fig1_df 
+
+# but this is wide, we need it long for ggplot
 
 keycol <- "Art Type"
 valuecol <- "Number of Schools"
@@ -149,7 +148,7 @@ Fig1_df_percent$Art_Type <- factor(Fig1_df_percent$Art_Type, levels = c("Dance",
   theme_team() +
   theme(axis.ticks.y = element_blank())
 
-# now make a version w/ title for inclusion in final presentation:
+# now make a version w/ title
 (Fig1c <- ggplot(Fig1_df_percent, aes(x=Art_Type, y=percent_of_schools, fill=Freq))) + 
   geom_bar(stat = "identity") + 
   coord_flip() + 
@@ -259,6 +258,8 @@ ggsave("Warren_Fig3.png", width = 16, height = 9, dpi = 72)
 
 # ====== FIGURE 4 ===============================
 supplies_df <- subset(elementaryVisual_df, select = c("POVST", "Q16G"))
+# save data set for submission with final project (since orig sets are so large)
+write.csv(supplies_df, file = "elementaryVisual.csv")
 names(supplies_df) <- c("Free_lunch_eligible", "Supplies_support")
 
 (supplies_tab <- as.data.frame(xtabs(~Free_lunch_eligible+Supplies_support, data = supplies_df)))
@@ -303,6 +304,8 @@ ggsave("Warren_Fig4.png", width = 16, height = 9, dpi = 72)
 
 # ====== FIGURE 5 ===============================
 instruments_df <- subset(elementaryMusic_df, select = c("POVST", "Q17G"))
+# save data set for submission with final project (since orig sets are so large)
+write.csv(instruments_df, file = "elementaryMusic.csv")
 names(instruments_df) <- c("Free_lunch_eligible", "Instruments_support")
 
 (instruments_tab <- as.data.frame(xtabs(~Free_lunch_eligible+Instruments_support, data = instruments_df)))

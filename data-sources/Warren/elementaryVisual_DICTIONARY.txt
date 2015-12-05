@@ -1,0 +1,3 @@
+Variable	VariableType	Defintion
+POVST		Factor			Percent of students eligible for free or reduced price lunch
+Q16G		Factor			How adequate is the support for teaching visual arts at this school in the area of having arts materials - expendable resources (e.g., paint, ink, clay, paper, cardboard, film, wood, plastic films)?

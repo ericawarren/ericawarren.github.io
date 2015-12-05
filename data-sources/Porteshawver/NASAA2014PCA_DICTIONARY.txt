@@ -1,0 +1,6 @@
+Variable		VariableType	Defintion
+region			character		A state or geographical region in U.S.
+year			integer			calendar year
+appropriations 	number			indicating state giving to the arts as integer
+population		integer			population (of state)
+value			number 			per capita appropriations of each state

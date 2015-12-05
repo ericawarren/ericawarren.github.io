@@ -1,0 +1,6 @@
+Variable	VariableType	Defintion
+POVST		Factor			Percent of students eligible for free or reduced price lunch
+Q1A			Factor			How often does the typical student in your school receive instruction designated specifically for visual arts during the regular school day?
+Q1B			Factor			How often does the typical student in your school receive instruction designated specifically for music during the regular school day?
+Q1C			Factor			How often does the typical student in your school receive instruction designated specifically for dance during the regular school day?
+Q1D			Factor			How often does the typical student in your school receive instruction designated specifically for drama during the regular school day?

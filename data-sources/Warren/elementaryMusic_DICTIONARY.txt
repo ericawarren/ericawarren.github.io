@@ -1,0 +1,3 @@
+Variable	VariableType	Defintion
+POVST		Factor			Percent of students eligible for free or reduced price lunch
+Q17G		Factor			How adequate is the support for teaching music at this school in the area of classroom instruments - instruments typically used by students in the music classroom (e.g., rhythm band sets, recorders, autoharps, Orff instruments, drums and ethnic percussion, guitar/ukulele)?

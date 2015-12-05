@@ -1,0 +1,8 @@
+Variable	VariableType	Defintion
+Year		integer			calendar year
+Total		number			value of total appropriations
+population	integer			population of the U.S.
+StateGiving	number			per capita value of total appropriations divided by population
+aboveone	integer			short form years where per capita state appropriations are above $1
+belowone	integer			short form years where per capita state appropriations are below $1 
+per capita	factor			long form factor variable for states above1 or below1 total per capita appropriations.

@@ -1,0 +1,3 @@
+Variable	VariableType	Defintion
+Annual		integer			hourly earnings for all employees (USD)
+Year		integer			calendar year

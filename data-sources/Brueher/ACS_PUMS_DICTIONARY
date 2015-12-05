@@ -1,0 +1,8 @@
+Variable	VariableType	Defintion
+ST        	character		State Code
+AGEP    	integer			Age 
+CIT 		character		Citizenship status
+WAGP		integer			Wages or salary income past 12 months
+NAICSP		character		NAICS Industry code based on 2007 NAICS code
+NATIVITY  	character		Nativity 
+OCCP02 		character		Occupation recode for data years 2008 and 2009 based on 2002 OCC code
