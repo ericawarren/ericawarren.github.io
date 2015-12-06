@@ -1,0 +1,97 @@
+#Do a bit of EDA on the data
+
+load(WAGP_Art_ST3.csv)
+load(da35529.0001)
+head(da35529.0001)
+hist(da35529.0001$WAGP)
+plot(da35529.0001$AGE, da35529.0001$WAGP)
+boxplot(da35529.0001$AGE)
+boxplot(da35529.0001$WAGP)
+
+
+#Here is Erica's Theme Template
+
+library(grid)
+plot(da35529.0001$AGE, da35529.0001$INTP)
+theme_team <- function(base_size = 20) {
+  # requires grid package for unit function
+  theme_grey(base_size) %+replace%
+    theme(
+      axis.title = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
+      axis.text = element_text(color = c("#424242"), size = 16, face = "bold"),
+      panel.background = element_blank(),
+      panel.grid = element_blank(),
+      axis.ticks = element_line(colour = c("#424242"), size = 1), 
+      axis.ticks.length = unit(0.5, "cm"),
+      axis.ticks.margin = unit(0.5, "cm"),
+      panel.margin = unit(0, "lines"), 
+      complete = TRUE
+    )
+}
+#End of Erica's Theme Template
+#plus add this after code
+
+
+
+barplot (da35529.0001$INTP, da35529.0001$ST)
+bartable = table(da35529.0001$INTP,da35529.0001$ST)  ## get the cross tab
+barplot(bartable, beside = TRUE, horiz=TRUE,legend = levels(unique(da35529.0001$INTP)))  ## plot 
+
+
+bartable = table(da35529.0001$AGEP,da35529.0001$ST)  ## get the cross tab
+barplot(
+    bartable, 
+    beside = TRUE, 
+    height, width = 1, space = NULL,
+    horiz=TRUE,
+    legend = levels(unique(da35529.0001$AGEP)))  ## plot 
+
+
+head(da35529.0001$ST)
+
+#Here is Erica's Theme Template
+
+library(grid)
+
+theme_team <- function(base_size = 20) {
+  # requires grid package for unit function
+  theme_grey(base_size) %+replace%
+    theme(
+      axis.title = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
+      axis.text = element_text(color = c("#424242"), size = 16, face = "bold"),
+      panel.background = element_blank(),
+      panel.grid = element_blank(),
+      axis.ticks = element_line(colour = c("#424242"), size = 1), 
+      axis.ticks.length = unit(0.5, "cm"),
+      axis.ticks.margin = unit(0.5, "cm"),
+      panel.margin = unit(0, "lines"), 
+      complete = TRUE
+    )
+}
+#End of Erica's Theme Template
+# plus add this after your
+theme_team() +
+  theme(axis.ticks.y = element_blank()
+#end the plus this
+
+#Build Aggregate State Summaries from ACS Data
+aggregate(WAGP ~ ST , da35529.0001,median)
+aggregate(WAGP ~ ST , da35529.0001,mean)
+        
+aggregate(AGEP ~ ST , da35529.0001,mean)
+aggregate(AGEP ~ ST , da35529.0001,median)
+
+#make a group of histograms for A Wages by Age for each State
+library(ggplot2)
+
+ggplot(data=da35529.0001) +geom_histogram(aes(x=ST))
+ggplot(data=da35529.0001) +geom_density(aes(x=ST), fill = "grey50")
+ggplot(da35529.0001, aes(x=AGEP, y=WAGP))+geom_point()
+#save basics of ggplot object to a varaible
+g <- ggplot(da35529.0001, aes(x=AGEP, y=WAGP))
+g +geom_point(aes(ST="WA")) +facet_wrap(~CIT)
+g +geom_point(aes(ST="CA")) +facet_wrap(~ST)
+
+#End Wage Age by State Histograms
+
+## End(Not run)

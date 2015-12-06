@@ -1,0 +1,581 @@
+> #Do a bit of EDA on the data
+> 
+> load(WAGP_Art_ST3.csv)
+> load(da35529.0001)
+> head(da35529.0001)
+  CASEID     SERIALNO RT SPORDER PUMA00 PUMA10                     ST   ADJINC PWGTP
+1      1 2.008000e+12  P       1   4200     NA (37) North Carolina/NC 1.086024    10
+2      2 2.008000e+12  P       2   3505     NA       (36) New York/NY 1.086024    17
+3      3 2.010000e+12  P       1   1305     NA         (41) Oregon/OR 1.061121    14
+4      4 2.010001e+12  P       2   2500     NA      (55) Wisconsin/WI 1.061121    11
+5      5 2.008000e+12  P       1   2302     NA        (18) Indiana/IN 1.086024    15
+6      6 2.009001e+12  P       1   2300     NA (37) North Carolina/NC 1.069920    16
+  AGEP                  CIT CITWP05 CITWP12
+1   24 (1) Born in the U.S.    <NA>    <NA>
+2   42 (1) Born in the U.S.    <NA>    <NA>
+3   64 (1) Born in the U.S.    <NA>    <NA>
+4   66 (1) Born in the U.S.    <NA>    <NA>
+5   50 (1) Born in the U.S.    <NA>    <NA>
+6   40 (1) Born in the U.S.    <NA>    <NA>
+                                                                                                               COW
+1 (1) Employee of a private for-profit company or business, or of an individual, for wages, salary, or commissions
+2                               (6) Self-employed in own not incorporated business, professional practice, or farm
+3                                 (2) Employee of a private not-for-profit, tax-exempt, or charitable organization
+4                                 (2) Employee of a private not-for-profit, tax-exempt, or charitable organization
+5 (1) Employee of a private for-profit company or business, or of an individual, for wages, salary, or commissions
+6                                 (2) Employee of a private not-for-profit, tax-exempt, or charitable organization
+    DDRS   DEAR   DEYE   DOUT   DPHY DRAT DRATX   DREM  ENG    FER    GCL  GCM  GCR
+1 (2) No (2) No (2) No (2) No (2) No <NA>  <NA> (2) No <NA> (2) No   <NA> <NA> <NA>
+2 (2) No (2) No (2) No (2) No (2) No <NA>  <NA> (2) No <NA> (2) No (2) No <NA> <NA>
+3 (2) No (2) No (2) No (2) No (2) No <NA>  <NA> (2) No <NA>   <NA> (2) No <NA> <NA>
+4 (2) No (2) No (2) No (2) No (2) No <NA>  <NA> (2) No <NA>   <NA> (2) No <NA> <NA>
+5 (2) No (2) No (2) No (2) No (2) No <NA>  <NA> (2) No <NA>   <NA> (2) No <NA> <NA>
+6 (2) No (2) No (2) No (2) No (2) No <NA>  <NA> (2) No <NA> (2) No (2) No <NA> <NA>
+    HINS1   HINS2   HINS3   HINS4  HINS5  HINS6  HINS7  INTP JWMNP
+1  (2) No  (2) No  (2) No (1) Yes (2) No (2) No (2) No     0    NA
+2  (2) No (1) Yes  (2) No  (2) No (2) No (2) No (2) No     0    60
+3 (1) Yes  (2) No  (2) No  (2) No (2) No (2) No (2) No 22100    30
+4  (2) No  (2) No (1) Yes  (2) No (2) No (2) No (2) No  5000    15
+5 (1) Yes  (2) No  (2) No  (2) No (2) No (2) No (2) No     0    15
+6 (1) Yes  (2) No  (2) No  (2) No (2) No (2) No (2) No     0    60
+                     JWRIP                    JWTR                        LANX
+1                     <NA>                    <NA> (2) No, speaks only English
+2         (01) Drove alone (01) Car, truck, or van (2) No, speaks only English
+3                     <NA> (02) Bus or trolley bus (2) No, speaks only English
+4         (01) Drove alone (01) Car, truck, or van (2) No, speaks only English
+5         (01) Drove alone (01) Car, truck, or van (2) No, speaks only English
+6 (07) In 7-person carpool (01) Car, truck, or van (2) No, speaks only English
+                                      MAR  MARHD  MARHM         MARHT  MARHW
+1                           (4) Separated (2) No (2) No  (1) One time (2) No
+2 (5) Never married or under 15 years old   <NA>   <NA>          <NA>   <NA>
+3                             (1) Married (2) No (2) No  (1) One time (2) No
+4                             (1) Married (2) No (2) No (2) Two times (2) No
+5                             (1) Married (2) No (2) No  (1) One time (2) No
+6                           (4) Separated (2) No (2) No  (1) One time (2) No
+     MARHYP05 MARHYP12                             MIG
+1 (2000) 2000     <NA> (1) Yes, same house (nonmovers)
+2        <NA>     <NA> (1) Yes, same house (nonmovers)
+3 (1978) 1978     <NA> (1) Yes, same house (nonmovers)
+4 (1995) 1995     <NA> (1) Yes, same house (nonmovers)
+5 (1986) 1986     <NA> (1) Yes, same house (nonmovers)
+6 (1990) 1990     <NA> (1) Yes, same house (nonmovers)
+                                   MIL MLPA MLPB MLPC MLPD MLPE MLPF MLPG MLPH MLPI
+1 (5) No, never served in the military <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+2 (5) No, never served in the military <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+3 (5) No, never served in the military <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+4 (5) No, never served in the military <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+5 (5) No, never served in the military <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+6 (5) No, never served in the military <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA> <NA>
+  MLPJ MLPK               NWAB               NWAV               NWLA
+1 <NA> <NA>             (2) No            (1) Yes             (2) No
+2 <NA> <NA>             (2) No (5) Did not report             (2) No
+3 <NA> <NA>             (2) No (5) Did not report             (2) No
+4 <NA> <NA>             (2) No (5) Did not report             (2) No
+5 <NA> <NA> (3) Did not report (5) Did not report (3) Did not report
+6 <NA> <NA>             (2) No (5) Did not report             (2) No
+                NWLK               NWRE  OIP PAP                   RELP RETP
+1            (1) Yes (3) Did not report 3600   0  (00) Reference person    0
+2 (3) Did not report (3) Did not report    0   0 (13) Unmarried partner    0
+3 (3) Did not report (3) Did not report    0   0  (00) Reference person    0
+4             (2) No (3) Did not report    0   0      (01) Husband/wife 1200
+5 (3) Did not report (3) Did not report    0   0  (00) Reference person    0
+6             (2) No (3) Did not report    0   0  (00) Reference person    0
+                                            SCH
+1      (2) Yes, public school or public college
+2 (1) No, has not attended in the last 3 months
+3 (1) No, has not attended in the last 3 months
+4 (1) No, has not attended in the last 3 months
+5 (1) No, has not attended in the last 3 months
+6 (1) No, has not attended in the last 3 months
+                                                   SCHG
+1 (15) College undergraduate years (freshman to senior)
+2                                                  <NA>
+3                                                  <NA>
+4                                                  <NA>
+5                                                  <NA>
+6                                                  <NA>
+                                               SCHL SEMP        SEX SSIP   SSP  WAGP
+1 (19) 1 or more years of college credit, no degree    0 (2) Female    0     0  4000
+2                              (22) Master's degree 3000 (2) Female    0     0 15000
+3                              (22) Master's degree    0 (2) Female    0     0 50000
+4           (18) Some college, but less than 1 year    0 (2) Female    0 11000  2200
+5                            (21) Bachelor's degree    0   (1) Male    0     0 60000
+6 (19) 1 or more years of college credit, no degree    0 (2) Female    0     0 24500
+  WKHP                           WKL                WKW YOEP05 YOEP12          ANC
+1   32 (1) Within the past 12 months (4) 27 to 39 weeks   <NA>   <NA> (2) Multiple
+2   35 (1) Within the past 12 months (1) 50 to 52 weeks   <NA>   <NA>   (1) Single
+3   40 (1) Within the past 12 months (1) 50 to 52 weeks   <NA>   <NA>   (1) Single
+4    2 (1) Within the past 12 months (3) 40 to 47 weeks   <NA>   <NA>   (1) Single
+5   45 (1) Within the past 12 months (1) 50 to 52 weeks   <NA>   <NA>   (1) Single
+6   38 (1) Within the past 12 months (2) 48 to 49 weeks   <NA>   <NA>   (1) Single
+                 ANC1P05 ANC1P12            ANC2P05 ANC2P12 DECADE
+1  (920) American Indian    <NA>        (050) Irish    <NA>   <NA>
+2           (178) Slavic    <NA> (999) Not reported    <NA>   <NA>
+3           (032) German    <NA> (999) Not reported    <NA>   <NA>
+4            (021) Dutch    <NA> (999) Not reported    <NA>   <NA>
+5         (088) Scottish    <NA> (999) Not reported    <NA>   <NA>
+6 (902) African American    <NA> (999) Not reported    <NA>   <NA>
+                       DIS                                            DRIVESP  ESP
+1 (2) Without a disability                                               <NA> <NA>
+2 (2) Without a disability                   (1) 1.000 vehicles (Drove alone) <NA>
+3 (2) Without a disability                                               <NA> <NA>
+4 (2) Without a disability                   (1) 1.000 vehicles (Drove alone) <NA>
+5 (2) Without a disability                   (1) 1.000 vehicles (Drove alone) <NA>
+6 (2) Without a disability (6) 0.143 vehicles (In a 7-or-more person carpool) <NA>
+                             ESR                              HICOV
+1                 (3) Unemployed (1) With health insurance coverage
+2 (1) Civilian employed, at work (1) With health insurance coverage
+3 (1) Civilian employed, at work (1) With health insurance coverage
+4 (1) Civilian employed, at work (1) With health insurance coverage
+5 (1) Civilian employed, at work (1) With health insurance coverage
+6 (1) Civilian employed, at work (1) With health insurance coverage
+                              HISP
+1 (01) Not Spanish/Hispanic/Latino
+2 (01) Not Spanish/Hispanic/Latino
+3 (01) Not Spanish/Hispanic/Latino
+4 (01) Not Spanish/Hispanic/Latino
+5 (01) Not Spanish/Hispanic/Latino
+6 (01) Not Spanish/Hispanic/Latino
+                                                                                      INDP
+1                                          (8690) ENT-DRINKING PLACES, ALCOHOLIC BEVERAGES
+2 (8560) ENT-INDEPENDENT ARTISTS, PERFORMING ARTS, SPECTATOR SPORTS AND RELATED INDUSTRIES
+3                                                                     (8190) MED-HOSPITALS
+4                                                       (9160) SRV-RELIGIOUS ORGANIZATIONS
+5                              (7290) PRF-ARCHITECTURAL, ENGINEERING, AND RELATED SERVICES
+6 (8560) ENT-INDEPENDENT ARTISTS, PERFORMING ARTS, SPECTATOR SPORTS AND RELATED INDUSTRIES
+                      JWAP                     JWDP LANP05 LANP12 MIGPUMA00
+1                     <NA>                     <NA>   <NA>   <NA>        NA
+2 (106) 9:00 am to 9:04 am (055) 8:00 am to 8:04 am   <NA>   <NA>        NA
+3 (085) 7:15 am to 7:19 am (040) 6:45 am to 6:49 am   <NA>   <NA>        NA
+4 (115) 9:45 am to 9:49 am (073) 9:30 am to 9:34 am   <NA>   <NA>        NA
+5 (081) 6:55 am to 6:59 am (039) 6:40 am to 6:44 am   <NA>   <NA>        NA
+6 (085) 7:15 am to 7:19 am (034) 6:15 am to 6:19 am   <NA>   <NA>        NA
+  MIGPUMA10 MIGSP05 MIGSP12                             MSP   NAICSP   NATIVITY  NOP
+1        NA    <NA>    <NA>                   (5) Separated 7224     (1) Native <NA>
+2        NA    <NA>    <NA>               (6) Never married 711      (1) Native <NA>
+3        NA    <NA>    <NA> (1) Now married, spouse present 622      (1) Native <NA>
+4        NA    <NA>    <NA> (1) Now married, spouse present 8131     (1) Native <NA>
+5        NA    <NA>    <NA> (1) Now married, spouse present 5413     (1) Native <NA>
+6        NA    <NA>    <NA>                   (5) Separated 711      (1) Native <NA>
+                    OC                                             OCCP02
+1 (0) No (includes GQ)              (2740) ENT-DANCERS AND CHOREOGRAPHERS
+2 (0) No (includes GQ) (2750) ENT-MUSICIANS, SINGERS, AND RELATED WORKERS
+3 (0) No (includes GQ)                                               <NA>
+4 (0) No (includes GQ)                                               <NA>
+5 (0) No (includes GQ)                (1300) ENG-ARCHITECTS, EXCEPT NAVAL
+6 (0) No (includes GQ)                                  (2700) ENT-ACTORS
+                                              OCCP10 OCCP12
+1                                               <NA>   <NA>
+2                                               <NA>   <NA>
+3                     (2850) ENT-WRITERS AND AUTHORS   <NA>
+4 (2750) ENT-MUSICIANS, SINGERS, AND RELATED WORKERS   <NA>
+5                                               <NA>   <NA>
+6                                               <NA>   <NA>
+                                      PAOC PERNP PINCP                  POBP05
+1 (1) With own children under 6 years only  4000  7600 (037) North Carolina/NC
+2                      (4) No own children 18000 18000   (042) Pennsylvania/PA
+3                      (4) No own children 50000 72100          (016) Idaho/ID
+4                      (4) No own children  2200 19400      (055) Wisconsin/WI
+5                                     <NA> 60000 60000       (031) Nebraska/NE
+6 (2) With own children 6 to 17 years only 24500 24500 (037) North Carolina/NC
+  POBP12 POVPIP POWPUMA00 POWPUMA10                 POWSP05 POWSP12
+1   <NA>     51        NA        NA                    <NA>    <NA>
+2   <NA>    162      3590        NA       (036) New York/NY    <NA>
+3   <NA>    501      1300        NA         (041) Oregon/OR    <NA>
+4   <NA>    261      2500        NA      (055) Wisconsin/WI    <NA>
+5   <NA>    501      2300        NA        (018) Indiana/IN    <NA>
+6   <NA>    180      1600        NA (037) North Carolina/NC    <NA>
+                                        PRIVCOV                             PUBCOV
+1 (2) Without private health insurance coverage    (1) With public health coverage
+2    (1) With private health insurance coverage (2) Without public health coverage
+3    (1) With private health insurance coverage (2) Without public health coverage
+4 (2) Without private health insurance coverage    (1) With public health coverage
+5    (1) With private health insurance coverage (2) Without public health coverage
+6    (1) With private health insurance coverage (2) Without public health coverage
+                      QTRBIR                               RAC1P
+1     (2) April through June                     (1) White alone
+2 (3) July through September                     (1) White alone
+3  (1) January through March                     (1) White alone
+4     (2) April through June                     (1) White alone
+5 (3) July through September                     (1) White alone
+6 (3) July through September (2) Black or African American alone
+                               RAC2P05 RAC2P12                              RAC3P05
+1                     (01) White alone    <NA>                     (69) White alone
+2                     (01) White alone    <NA>                     (69) White alone
+3                     (01) White alone    <NA>                     (69) White alone
+4                     (01) White alone    <NA>                     (69) White alone
+5                     (01) White alone    <NA>                     (69) White alone
+6 (02) Black or African American alone    <NA> (44) Black or African American alone
+  RAC3P12 RACAIAN RACASN  RACBLK RACNHPI RACNUM RACSOR  RACWHT                   RC
+1    <NA>  (0) No (0) No  (0) No  (0) No      1 (0) No (1) Yes (0) No (includes GQ)
+2    <NA>  (0) No (0) No  (0) No  (0) No      1 (0) No (1) Yes (0) No (includes GQ)
+3    <NA>  (0) No (0) No  (0) No  (0) No      1 (0) No (1) Yes (0) No (includes GQ)
+4    <NA>  (0) No (0) No  (0) No  (0) No      1 (0) No (1) Yes (0) No (includes GQ)
+5    <NA>  (0) No (0) No  (0) No  (0) No      1 (0) No (1) Yes (0) No (includes GQ)
+6    <NA>  (0) No (0) No (1) Yes  (0) No      1 (0) No  (0) No (0) No (includes GQ)
+   SFN  SFR SOCP00 SOCP10 SOCP12  VPS                         WAOB  FAGEP  FANCP
+1 <NA> <NA> 272030 N.A.// N.A.// <NA> (1) US state (POB = 001-059) (0) No (0) No
+2 <NA> <NA> 272040 N.A.// N.A.// <NA> (1) US state (POB = 001-059) (0) No (0) No
+3 <NA> <NA> N.A.// 273043 N.A.// <NA> (1) US state (POB = 001-059) (0) No (0) No
+4 <NA> <NA> N.A.// 272040 N.A.// <NA> (1) US state (POB = 001-059) (0) No (0) No
+5 <NA> <NA> 171010 N.A.// N.A.// <NA> (1) US state (POB = 001-059) (0) No (0) No
+6 <NA> <NA> 272011 N.A.// N.A.// <NA> (1) US state (POB = 001-059) (0) No (0) No
+   FCITP FCITWP  FCOWP FDDRSP FDEARP FDEYEP FDOUTP FDPHYP FDRATP FDRATXP FDREMP
+1 (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No  (0) No (0) No
+2 (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No  (0) No (0) No
+3 (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No  (0) No (0) No
+4 (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No  (0) No (0) No
+5 (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No  (0) No (0) No
+6 (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No (0) No  (0) No (0) No
+   FENGP  FESRP  FFERP  FGCLP  FGCMP  FGCRP FHINS1P FHINS2P FHINS3C FHINS3P FHINS4C
+1 (0) No (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No    <NA>  (0) No  (0) No
+2 (0) No (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No    <NA>  (0) No    <NA>
+3 (0) No (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No    <NA>  (0) No    <NA>
+4 (0) No (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No    <NA>
+5 (0) No (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No    <NA>  (0) No    <NA>
+6 (0) No (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No    <NA>  (0) No    <NA>
+  FHINS4P FHINS5C FHINS5P FHINS6P FHINS7P  FHISP  FINDP  FINTP   FJWDP FJWMNP FJWRIP
+1  (0) No    <NA>  (0) No  (0) No  (0) No (0) No (0) No (0) No  (0) No (0) No (0) No
+2  (0) No    <NA>  (0) No  (0) No  (0) No (0) No (0) No (0) No (1) Yes (0) No (0) No
+3  (0) No    <NA>  (0) No  (0) No  (0) No (0) No (0) No (0) No  (0) No (0) No (0) No
+4  (0) No    <NA>  (0) No  (0) No  (0) No (0) No (0) No (0) No  (0) No (0) No (0) No
+5  (0) No    <NA>  (0) No  (0) No  (0) No (0) No (0) No (0) No  (0) No (0) No (0) No
+6  (0) No    <NA>  (0) No  (0) No  (0) No (0) No (0) No (0) No  (0) No (0) No (0) No
+  FJWTRP  FLANP FLANXP FMARHDP FMARHMP FMARHTP FMARHWP FMARHYP  FMARP  FMIGP FMIGSP
+1 (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No  (0) No (0) No (0) No (0) No
+2 (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No  (0) No (0) No (0) No (0) No
+3 (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No  (0) No (0) No (0) No (0) No
+4 (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No  (0) No (0) No (0) No (0) No
+5 (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No  (0) No (0) No (0) No (0) No
+6 (0) No (0) No (0) No  (0) No  (0) No  (0) No  (0) No  (0) No (0) No (0) No (0) No
+  FMILPP FMILSP  FOCCP   FOIP   FPAP   FPOBP  FPOWSP  FRACP  FRELP  FRETP FSCHGP
+1 (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No (0) No (0) No (0) No
+2 (0) No (0) No (0) No (0) No (0) No (1) Yes (1) Yes (0) No (0) No (0) No (0) No
+3 (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No (0) No (0) No (0) No
+4 (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No (0) No (0) No (0) No
+5 (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No (0) No (0) No (0) No
+6 (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No (0) No (0) No (0) No
+   FSCHLP   FSCHP  FSEMP  FSEXP  FSSIP   FSSP   FWAGP   FWKHP  FWKLP   FWKWP  FYOEP
+1 (1) Yes  (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No  (0) No (0) No
+2  (0) No (1) Yes (0) No (0) No (0) No (0) No  (0) No (1) Yes (0) No (1) Yes (0) No
+3  (0) No  (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No  (0) No (0) No
+4  (0) No  (0) No (0) No (0) No (0) No (0) No (1) Yes  (0) No (0) No  (0) No (0) No
+5  (0) No  (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No  (0) No (0) No
+6  (0) No  (0) No (0) No (0) No (0) No (0) No  (0) No  (0) No (0) No  (0) No (0) No
+  PWGTP1 PWGTP2 PWGTP3 PWGTP4 PWGTP5 PWGTP6 PWGTP7 PWGTP8 PWGTP9 PWGTP10 PWGTP11
+1      9     10     17      3     10     10      3     11     11       4      11
+2     15     26     19     17     20      5      5     17      5      33       5
+3     14     23     14     14     24     16     22      4      4      15      13
+4     18     17     21      3     11      9     17      4     10      11       4
+5      4     14      5      4      5      4     15     15      5       4      18
+6     18     24      5     19     19     13     14     18     14      22       9
+  PWGTP12 PWGTP13 PWGTP14 PWGTP15 PWGTP16 PWGTP17 PWGTP18 PWGTP19 PWGTP20 PWGTP21
+1       7      11       3      15      22      14      18       3       9      10
+2      26      20      33      24      15      17      15      17      20       5
+3      14      22      15       5      14       4       4      21      15      15
+4      12      11       4      12      11      11       4      20      10       3
+5       4       4      17      14      14      15       5      15      22      15
+6      33      16      21      27      22      15       7      10      18       4
+  PWGTP22 PWGTP23 PWGTP24 PWGTP25 PWGTP26 PWGTP27 PWGTP28 PWGTP29 PWGTP30 PWGTP31
+1      11       3      17      10       9      16      12      12      20      10
+2      17      28       5       5      18      14      30      16      15      17
+3       4      16      14       4      14       4      24      22      15      13
+4       3       3      18      12      11       4      22      12      11      20
+5      22      14      13      14      14      25      26      14      16      23
+6      15      16      16       4      24      24      22      27       6      18
+  PWGTP32 PWGTP33 PWGTP34 PWGTP35 PWGTP36 PWGTP37 PWGTP38 PWGTP39 PWGTP40 PWGTP41
+1       9      10      14       4       3       3       2      18      12      10
+2      18      24      14      20       5       5      31      27       4      16
+3      14       4      14      24      14      23      25       4      15      15
+4      12      11      18      10      12      12      18       3      12      21
+5      17      14      28      24      23      25      15      25      17       4
+6      13      31       6      22      14       4      22      23       4      15
+  PWGTP42 PWGTP43 PWGTP44 PWGTP45 PWGTP46 PWGTP47 PWGTP48 PWGTP49 PWGTP50 PWGTP51
+1      10       3      18      11      10      14      11       9      16      13
+2      29      16      16      19       5       5      18       5      31       5
+3      23      14      14      24      14      24       4       4      14      15
+4      18      17       3      11      12      17       3      10      11       4
+5      13       4       5       3       5      16      16       4       4      15
+6      27       6      28      17      15      21      20      16      16       4
+  PWGTP52 PWGTP53 PWGTP54 PWGTP55 PWGTP56 PWGTP57 PWGTP58 PWGTP59 PWGTP60 PWGTP61
+1       9       9      17       3       5       2       3      18       9      10
+2      24      20      33      24      18      17      15      17      18       6
+3      14      24      14       4      14       5       4      23      15      13
+4      10      12       3      10      11      12       3      18      12       3
+5       4       4      14      15      14      13       5      17      24      14
+6      26      19      17      35      29      13       4       5      15       6
+  PWGTP62 PWGTP63 PWGTP64 PWGTP65 PWGTP66 PWGTP67 PWGTP68 PWGTP69 PWGTP70 PWGTP71
+1      10      17       3       8      13       3       9      11       4       8
+2      16      27       5       5      17      14      29      16      15      15
+3       4      15      12       4      15       4      24      24      14      15
+4       3       4      25      10      10       3      20      11      13      22
+5      25      14      15      16      15      22      22      14      15      26
+6      16      19      22       5      24      26      31      29       6      15
+  PWGTP72 PWGTP73 PWGTP74 PWGTP75 PWGTP76 PWGTP77 PWGTP78 PWGTP79 PWGTP80
+1       9      10       3      17      22      16      15       2      11
+2      18      26      16      19       5       4      31      29       4
+3      14       4      13      22      14      25      22       4      14
+4      12      11      17      12      11      10      21       3      12
+5      17      15      25      28      25      22      14      27      15
+6      14      31       6      15      26       5      13      18       4
+> hist(da35529.0001$WAGP)
+> plot(da35529.0001$AGE, da35529.0001$WAGP)
+> boxplot(da35529.0001$AGE)
+> boxplot(da35529.0001$WAGP)
+> 
+> 
+> #Here is Erica's Theme Template
+> 
+> library(grid)
+> plot(da35529.0001$AGE, da35529.0001$INTP)
+> theme_team <- function(base_size = 20) {
++   # requires grid package for unit function
++   theme_grey(base_size) %+replace%
++     theme(
++       axis.title = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
++       axis.text = element_text(color = c("#424242"), size = 16, face = "bold"),
++       panel.background = element_blank(),
++       panel.grid = element_blank(),
++       axis.ticks = element_line(colour = c("#424242"), size = 1), 
++       axis.ticks.length = unit(0.5, "cm"),
++       axis.ticks.margin = unit(0.5, "cm"),
++       panel.margin = unit(0, "lines"), 
++       complete = TRUE
++     )
++ }
+> #End of Erica's Theme Template
+> #plus add this after code
+> 
+> 
+> 
+> barplot (da35529.0001$INTP, da35529.0001$ST)
+Error in barplot.default(da35529.0001$INTP, da35529.0001$ST) : 
+  'height' must be a vector or a matrix
+In addition: Warning message:
+In mean.default(width) : argument is not numeric or logical: returning NA
+> bartable = table(da35529.0001$INTP,da35529.0001$ST)  ## get the cross tab
+> barplot(bartable, beside = TRUE, horiz=TRUE,legend = levels(unique(da35529.0001$INTP)))  ## plot 
+> 
+> 
+> bartable = table(da35529.0001$AGEP,da35529.0001$ST)  ## get the cross tab
+> barplot(
++     bartable, 
++     beside = TRUE, 
++     height, width = 1, space = NULL,
++     horiz=TRUE,
++     legend = levels(unique(da35529.0001$AGEP)))  ## plot 
+Error in barplot.default(bartable, beside = TRUE, height, width = 1, space = NULL,  : 
+  object 'height' not found
+> 
+> 
+> head(da35529.0001$ST)
+[1] (37) North Carolina/NC (36) New York/NY       (41) Oregon/OR        
+[4] (55) Wisconsin/WI      (18) Indiana/IN        (37) North Carolina/NC
+52 Levels: (01) Alabama/AL (02) Alaska/AK (04) Arizona/AZ ... (72) Puerto Rico/PR
+> 
+> #Here is Erica's Theme Template
+> 
+> library(grid)
+> 
+> theme_team <- function(base_size = 20) {
++   # requires grid package for unit function
++   theme_grey(base_size) %+replace%
++     theme(
++       axis.title = element_text(color = c("#424242"), size = 20, face = "bold", vjust = -0.5),
++       axis.text = element_text(color = c("#424242"), size = 16, face = "bold"),
++       panel.background = element_blank(),
++       panel.grid = element_blank(),
++       axis.ticks = element_line(colour = c("#424242"), size = 1), 
++       axis.ticks.length = unit(0.5, "cm"),
++       axis.ticks.margin = unit(0.5, "cm"),
++       panel.margin = unit(0, "lines"), 
++       complete = TRUE
++     )
++ }
+> #End of Erica's Theme Template
+> # plus add this after your
+> theme_team() +
++   theme(axis.ticks.y = element_blank()
++ #end the plus this
++ 
++ #Build Aggregate State Summaries from ACS Data
++ aggregate(WAGP ~ ST , da35529.0001,median)
+Error: unexpected symbol in:
+"#Build Aggregate State Summaries from ACS Data
+aggregate"
+> aggregate(WAGP ~ ST , da35529.0001,mean)
+                             ST     WAGP
+1               (01) Alabama/AL 24828.56
+2                (02) Alaska/AK 21805.46
+3               (04) Arizona/AZ 25404.13
+4              (05) Arkansas/AR 23404.45
+5            (06) California/CA 38159.73
+6              (08) Colorado/CO 28305.85
+7           (09) Connecticut/CT 34640.27
+8              (10) Delaware/DE 23694.50
+9  (11) District of Columbia/DC 42303.69
+10              (12) Florida/FL 26629.77
+11              (13) Georgia/GA 30551.54
+12               (15) Hawaii/HI 26840.35
+13                (16) Idaho/ID 20473.37
+14             (17) Illinois/IL 31433.57
+15              (18) Indiana/IN 24246.89
+16                 (19) Iowa/IA 23711.54
+17               (20) Kansas/KS 25552.20
+18             (21) Kentucky/KY 24983.32
+19            (22) Louisiana/LA 24280.32
+20                (23) Maine/ME 19801.52
+21             (24) Maryland/MD 40713.69
+22        (25) Massachusetts/MA 31487.76
+23             (26) Michigan/MI 26047.48
+24            (27) Minnesota/MN 28515.14
+25          (28) Mississippi/MS 22288.62
+26             (29) Missouri/MO 25090.83
+27              (30) Montana/MT 18118.53
+28             (31) Nebraska/NE 23392.39
+29               (32) Nevada/NV 28130.91
+30        (33) New Hampshire/NH 23101.88
+31           (34) New Jersey/NJ 40706.64
+32           (35) New Mexico/NM 20299.86
+33             (36) New York/NY 37920.50
+34       (37) North Carolina/NC 24713.72
+35         (38) North Dakota/ND 17898.56
+36                 (39) Ohio/OH 26052.42
+37             (40) Oklahoma/OK 23440.53
+38               (41) Oregon/OR 24558.43
+39         (42) Pennsylvania/PA 26678.51
+40         (44) Rhode Island/RI 29782.81
+41       (45) South Carolina/SC 23309.21
+42         (46) South Dakota/SD 18975.44
+43            (47) Tennessee/TN 22902.31
+44                (48) Texas/TX 30477.68
+45                 (49) Utah/UT 26202.79
+46              (50) Vermont/VT 20735.92
+47             (51) Virginia/VA 33272.93
+48           (53) Washington/WA 27636.59
+49        (54) West Virginia/WV 19260.03
+50            (55) Wisconsin/WI 25047.71
+51              (56) Wyoming/WY 15655.97
+>         
+> aggregate(AGEP ~ ST , da35529.0001,mean)
+                             ST     AGEP
+1               (01) Alabama/AL 44.97054
+2                (02) Alaska/AK 45.77295
+3               (04) Arizona/AZ 46.48874
+4              (05) Arkansas/AR 44.00517
+5            (06) California/CA 43.94841
+6              (08) Colorado/CO 45.69598
+7           (09) Connecticut/CT 47.11123
+8              (10) Delaware/DE 48.35793
+9  (11) District of Columbia/DC 42.15739
+10              (12) Florida/FL 46.30422
+11              (13) Georgia/GA 43.87334
+12               (15) Hawaii/HI 46.64157
+13                (16) Idaho/ID 44.30085
+14             (17) Illinois/IL 43.15358
+15              (18) Indiana/IN 44.07564
+16                 (19) Iowa/IA 43.86124
+17               (20) Kansas/KS 44.90550
+18             (21) Kentucky/KY 44.95004
+19            (22) Louisiana/LA 45.34308
+20                (23) Maine/ME 50.34357
+21             (24) Maryland/MD 44.89175
+22        (25) Massachusetts/MA 45.63477
+23             (26) Michigan/MI 45.23143
+24            (27) Minnesota/MN 44.97742
+25          (28) Mississippi/MS 46.43257
+26             (29) Missouri/MO 43.30136
+27              (30) Montana/MT 47.25664
+28             (31) Nebraska/NE 43.86392
+29               (32) Nevada/NV 42.90026
+30        (33) New Hampshire/NH 48.30809
+31           (34) New Jersey/NJ 44.51985
+32           (35) New Mexico/NM 48.48825
+33             (36) New York/NY 43.19977
+34       (37) North Carolina/NC 45.11125
+35         (38) North Dakota/ND 46.08497
+36                 (39) Ohio/OH 44.27503
+37             (40) Oklahoma/OK 44.94391
+38               (41) Oregon/OR 45.40553
+39         (42) Pennsylvania/PA 44.45046
+40         (44) Rhode Island/RI 44.52216
+41       (45) South Carolina/SC 45.99926
+42         (46) South Dakota/SD 40.75732
+43            (47) Tennessee/TN 44.82887
+44                (48) Texas/TX 44.15227
+45                 (49) Utah/UT 40.91746
+46              (50) Vermont/VT 50.95550
+47             (51) Virginia/VA 45.07448
+48           (53) Washington/WA 46.07143
+49        (54) West Virginia/WV 43.80263
+50            (55) Wisconsin/WI 46.25396
+51              (56) Wyoming/WY 46.54839
+> aggregate(AGEP ~ ST , da35529.0001,median)
+                             ST AGEP
+1               (01) Alabama/AL 45.0
+2                (02) Alaska/AK 47.0
+3               (04) Arizona/AZ 47.0
+4              (05) Arkansas/AR 44.0
+5            (06) California/CA 43.0
+6              (08) Colorado/CO 46.0
+7           (09) Connecticut/CT 48.0
+8              (10) Delaware/DE 49.0
+9  (11) District of Columbia/DC 39.0
+10              (12) Florida/FL 47.0
+11              (13) Georgia/GA 43.0
+12               (15) Hawaii/HI 48.0
+13                (16) Idaho/ID 45.0
+14             (17) Illinois/IL 42.0
+15              (18) Indiana/IN 44.0
+16                 (19) Iowa/IA 43.0
+17               (20) Kansas/KS 46.0
+18             (21) Kentucky/KY 45.0
+19            (22) Louisiana/LA 45.0
+20                (23) Maine/ME 52.0
+21             (24) Maryland/MD 45.0
+22        (25) Massachusetts/MA 46.0
+23             (26) Michigan/MI 46.0
+24            (27) Minnesota/MN 46.0
+25          (28) Mississippi/MS 47.0
+26             (29) Missouri/MO 43.0
+27              (30) Montana/MT 48.0
+28             (31) Nebraska/NE 43.0
+29               (32) Nevada/NV 41.0
+30        (33) New Hampshire/NH 49.0
+31           (34) New Jersey/NJ 44.0
+32           (35) New Mexico/NM 50.0
+33             (36) New York/NY 41.0
+34       (37) North Carolina/NC 45.0
+35         (38) North Dakota/ND 47.0
+36                 (39) Ohio/OH 44.0
+37             (40) Oklahoma/OK 45.0
+38               (41) Oregon/OR 45.0
+39         (42) Pennsylvania/PA 44.5
+40         (44) Rhode Island/RI 44.0
+41       (45) South Carolina/SC 47.0
+42         (46) South Dakota/SD 40.0
+43            (47) Tennessee/TN 44.0
+44                (48) Texas/TX 43.0
+45                 (49) Utah/UT 38.0
+46              (50) Vermont/VT 53.0
+47             (51) Virginia/VA 45.0
+48           (53) Washington/WA 46.0
+49        (54) West Virginia/WV 43.0
+50            (55) Wisconsin/WI 47.0
+51              (56) Wyoming/WY 47.0
+> 
+> #make a group of histograms for A Wages by Age for each State
+> library(ggplot2)
+> 
+> ggplot(data=da35529.0001) +geom_histogram(aes(x=ST))
+> ggplot(data=da35529.0001) +geom_density(aes(x=ST), fill = "grey50")
+> ggplot(da35529.0001, aes(x=AGEP, y=WAGP))+geom_point()
+> #save basics of ggplot object to a varaible
+> g <- ggplot(da35529.0001, aes(x=AGEP, y=WAGP))
+> g +geom_point(aes(ST="WA")) +facet_wrap(~CIT)
+> g +geom_point(aes(ST="CA")) +facet_wrap(~ST)
+> 
+> #End Wage Age by State Histograms
+> 
+> ## End(Not run)
+> 
